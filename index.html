@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetMind - 宠物 AI 健康与情绪记录</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <section class="auth-screen" id="authScreen">
+      <div class="auth-visual" aria-hidden="true">
+        <svg viewBox="0 0 420 320">
+          <path class="rug" d="M52 255c48-51 270-54 319-2 35 38-28 57-164 56-128-1-188-20-155-54z" />
+          <path class="dog-body" d="M232 158c32-39 107-30 128 11 21 42-9 83-58 86-49 4-100-15-103-52-2-18 10-35 33-45z" />
+          <path class="dog-head" d="M277 82c35-11 73 8 80 41 7 34-18 62-53 65-35 4-67-17-70-51-3-27 13-47 43-55z" />
+          <path class="dog-ear" d="M350 110c25 8 35 31 27 52-5 12-20 3-30-11-12-17-16-36 3-41z" />
+          <path class="cat-body" d="M81 170c8-39 65-56 101-29 38 30 28 94-17 110-43 15-92-2-101-37-4-16 3-31 17-44z" />
+          <path class="cat-head" d="M89 100l21 22c18-11 42-12 61-1l20-23 5 48c12 22 5 50-18 66-30 21-77 14-97-15-13-19-13-41 0-58l8-39z" />
+          <circle class="eye" cx="120" cy="155" r="5" />
+          <circle class="eye" cx="160" cy="155" r="5" />
+          <circle class="eye" cx="304" cy="129" r="5" />
+          <circle class="eye" cx="340" cy="126" r="5" />
+        </svg>
+      </div>
+      <form class="auth-card" id="authForm">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">PM</div>
+          <div>
+            <strong>PetMind</strong>
+            <span>宠物 AI 健康与情绪记录</span>
+          </div>
+        </div>
+        <div>
+          <p class="eyebrow">Welcome</p>
+          <h1>登录后开始记录宠物每天的状态</h1>
+        </div>
+        <div class="form-row">
+          <label for="authName">昵称</label>
+          <input id="authName" type="text" placeholder="宠物主人" />
+        </div>
+        <div class="form-row">
+          <label for="authEmail">邮箱</label>
+          <input id="authEmail" required type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-row">
+          <label for="authPassword">密码</label>
+          <input id="authPassword" required minlength="6" type="password" placeholder="至少 6 位" />
+        </div>
+        <button class="primary-button" type="submit">登录 / 注册</button>
+        <p class="muted">演示版账号只保存在当前浏览器，用于体验完整产品流程。</p>
+      </form>
+    </section>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="主导航">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">PM</div>
+          <div>
+            <strong>PetMind</strong>
+            <span>宠物状态记录</span>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item active" data-view="dashboard" type="button">
+            <span aria-hidden="true">⌂</span>
+            首页
+          </button>
+          <button class="nav-item" data-view="records" type="button">
+            <span aria-hidden="true">◴</span>
+            记录
+          </button>
+          <button class="nav-item" data-view="trends" type="button">
+            <span aria-hidden="true">⌁</span>
+            趋势
+          </button>
+          <button class="nav-item" data-view="settings" type="button">
+            <span aria-hidden="true">⚙</span>
+            设置
+          </button>
+        </nav>
+
+        <div class="sidebar-note">
+          <span>AI 提醒</span>
+          <p>分析结果仅供日常观察，不能替代专业兽医诊断。</p>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">今日照护</p>
+            <h1>记录宠物每天的状态</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="ghost-button" id="logoutButton" type="button">退出</button>
+            <button class="ghost-button" id="seedDemo" type="button">载入示例</button>
+            <button class="primary-button" id="openPetModal" type="button">新增宠物</button>
+          </div>
+        </header>
+
+        <section class="view active" id="dashboardView" aria-label="首页">
+          <div class="hero-panel">
+            <div class="hero-copy">
+              <p class="eyebrow">AI Daily Check</p>
+              <h2>一张照片，生成今天的宠物观察报告。</h2>
+              <p>上传猫狗照片，结合档案与历史记录，获得情绪、健康状态、风险提醒和照护建议。</p>
+              <div class="hero-actions">
+                <button class="primary-button" id="quickUpload" type="button">上传今日照片</button>
+                <button class="secondary-button" data-view-target="records" type="button">查看历史</button>
+              </div>
+            </div>
+            <div class="pet-visual" aria-hidden="true">
+              <div class="sun"></div>
+              <svg viewBox="0 0 420 300" role="img" aria-label="猫狗插画">
+                <path class="rug" d="M53 238c43-48 269-53 318-4 38 38-17 59-159 58C76 292 18 277 53 238z" />
+                <path class="dog-body" d="M236 155c29-41 104-33 128 7 25 41 1 86-49 91-50 5-104-11-111-48-3-18 10-38 32-50z" />
+                <path class="dog-head" d="M284 77c34-12 75 5 83 38 8 34-15 64-50 69-37 5-70-14-75-48-4-28 12-49 42-59z" />
+                <path class="dog-ear" d="M358 104c25 7 37 29 30 51-4 12-20 4-31-10-13-16-18-35 1-41z" />
+                <circle class="eye" cx="304" cy="126" r="5" />
+                <circle class="eye" cx="342" cy="121" r="5" />
+                <path class="nose" d="M323 143c10-5 21-4 24 2 3 7-5 15-15 15-11 0-19-11-9-17z" />
+                <path class="cat-body" d="M76 164c8-40 67-57 103-29 39 29 28 96-18 112-44 15-94-2-103-38-4-16 3-32 18-45z" />
+                <path class="cat-head" d="M84 94l22 22c18-12 43-13 62-2l20-24 5 50c13 22 6 51-18 68-31 22-79 14-100-15-13-20-13-42 0-60l9-39z" />
+                <circle class="eye" cx="116" cy="151" r="5" />
+                <circle class="eye" cx="157" cy="151" r="5" />
+                <path class="nose" d="M132 170c8-5 18-4 22 1-3 9-18 13-22-1z" />
+                <path class="tail" d="M72 198c-32 1-48-20-44-45 4-21 31-19 29 0-2 13 7 23 23 24" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="content-grid">
+            <section class="panel wide">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Pets</p>
+                  <h3>宠物档案</h3>
+                </div>
+                <button class="icon-button" id="addPetInline" type="button" aria-label="新增宠物">+</button>
+              </div>
+              <div class="pet-list" id="petList"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <div>
+                  <p class="eyebrow">Today</p>
+                  <h3>今日分析</h3>
+                </div>
+              </div>
+              <div id="todaySummary" class="empty-state"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="recordsView" aria-label="记录">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Timeline</p>
+              <h2>历史记录</h2>
+            </div>
+            <button class="primary-button" id="recordUpload" type="button">新增记录</button>
+          </div>
+          <div id="recordList" class="record-list"></div>
+        </section>
+
+        <section class="view" id="trendsView" aria-label="趋势">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Insight</p>
+              <h2>状态趋势</h2>
+            </div>
+          </div>
+          <div class="trend-grid" id="trendGrid"></div>
+        </section>
+
+        <section class="view" id="settingsView" aria-label="设置">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Account</p>
+              <h2>设置与隐私</h2>
+            </div>
+          </div>
+          <div class="settings-layout">
+            <section class="panel">
+              <h3>账户</h3>
+              <div class="form-row">
+                <label for="profileName">昵称</label>
+                <input id="profileName" type="text" placeholder="宠物主人" />
+              </div>
+              <div class="form-row">
+                <label for="profileEmail">邮箱</label>
+                <input id="profileEmail" type="email" placeholder="you@example.com" />
+              </div>
+              <button class="primary-button" id="saveProfile" type="button">保存</button>
+            </section>
+            <section class="panel">
+              <h3>隐私与安全</h3>
+              <p class="muted">当前演示版将数据保存在你的浏览器本地，不会上传到服务器。</p>
+              <button class="danger-button" id="clearData" type="button">清空本地数据</button>
+            </section>
+            <section class="panel wide">
+              <h3>免责声明</h3>
+              <p class="muted">PetMind 的 AI 分析用于日常观察与记录，不构成医疗诊断、治疗方案或用药建议。如宠物出现持续不适、明显疼痛、食欲异常、呼吸困难、外伤等情况，请及时联系专业兽医。</p>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="modal" id="petModal">
+      <form id="petForm" method="dialog" class="modal-card">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">Pet Profile</p>
+            <h2>新增宠物档案</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-modal="petModal" aria-label="关闭">×</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label for="petName">名字</label>
+            <input id="petName" required type="text" placeholder="例如：豆豆" />
+          </div>
+          <div class="form-row">
+            <label for="petSpecies">类型</label>
+            <select id="petSpecies" required>
+              <option value="cat">猫</option>
+              <option value="dog">狗</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="petBreed">品种</label>
+            <input id="petBreed" type="text" placeholder="例如：英短、金毛" />
+          </div>
+          <div class="form-row">
+            <label for="petGender">性别</label>
+            <select id="petGender">
+              <option value="unknown">未知</option>
+              <option value="female">母</option>
+              <option value="male">公</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="petBirthday">生日</label>
+            <input id="petBirthday" type="date" />
+          </div>
+          <div class="form-row">
+            <label for="petWeight">体重 kg</label>
+            <input id="petWeight" min="0" step="0.1" type="number" placeholder="4.8" />
+          </div>
+          <div class="form-row">
+            <label for="petNeutered">绝育状态</label>
+            <select id="petNeutered">
+              <option value="unknown">未知</option>
+              <option value="yes">已绝育</option>
+              <option value="no">未绝育</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="petAvatar">头像</label>
+            <input id="petAvatar" type="file" accept="image/*" />
+          </div>
+          <div class="form-row full">
+            <label for="petMedical">既往病史</label>
+            <textarea id="petMedical" rows="3" placeholder="可填写过敏、慢性病、手术史等"></textarea>
+          </div>
+          <div class="form-row full">
+            <label for="petPersonality">性格特点</label>
+            <textarea id="petPersonality" rows="3" placeholder="例如：胆小、活泼、黏人"></textarea>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary-button" type="button" data-close-modal="petModal">取消</button>
+          <button class="primary-button" type="submit">保存档案</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="recordModal">
+      <form id="recordForm" method="dialog" class="modal-card">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">Daily Check</p>
+            <h2>上传今日照片</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-modal="recordModal" aria-label="关闭">×</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-row full">
+            <label for="recordPet">选择宠物</label>
+            <select id="recordPet" required></select>
+          </div>
+          <div class="form-row full">
+            <label for="recordImage">照片</label>
+            <input id="recordImage" required type="file" accept="image/*" />
+          </div>
+          <div class="upload-preview" id="uploadPreview"></div>
+          <div class="form-row full">
+            <label for="recordNote">今日备注</label>
+            <textarea id="recordNote" rows="4" placeholder="例如：今天有点不爱吃饭，或者特别活跃"></textarea>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="secondary-button" type="button" data-close-modal="recordModal">取消</button>
+          <button class="primary-button" type="submit">开始分析</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="analysisModal">
+      <div class="modal-card analysis-card">
+        <div class="modal-header">
+          <div>
+            <p class="eyebrow">AI Report</p>
+            <h2>分析结果</h2>
+          </div>
+          <button class="icon-button" type="button" data-close-modal="analysisModal" aria-label="关闭">×</button>
+        </div>
+        <div id="analysisDetail"></div>
+      </div>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
