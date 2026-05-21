@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#203f3b" />
     <title>PetMind - 宠物 AI 健康与情绪记录</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -90,7 +91,7 @@
         <header class="topbar">
           <div>
             <p class="eyebrow">今日照护</p>
-            <h1>记录宠物每天的状态</h1>
+          <h1>今天给宠物拍一张</h1>
           </div>
           <div class="topbar-actions">
             <button class="ghost-button" id="logoutButton" type="button">退出</button>
@@ -103,10 +104,13 @@
           <div class="hero-panel">
             <div class="hero-copy">
               <p class="eyebrow">AI Daily Check</p>
-              <h2>一张照片，生成今天的宠物观察报告。</h2>
-              <p>上传猫狗照片，结合档案与历史记录，获得情绪、健康状态、风险提醒和照护建议。</p>
+              <h2>拍一张照片，生成今天的宠物观察报告。</h2>
+              <p>手机上点击拍照会调起相机，结合宠物档案与历史记录，生成情绪、健康状态和照护建议。</p>
               <div class="hero-actions">
-                <button class="primary-button" id="quickUpload" type="button">上传今日照片</button>
+                <button class="primary-button camera-cta" id="quickUpload" type="button">
+                  <span aria-hidden="true">◉</span>
+                  拍照分析
+                </button>
                 <button class="secondary-button" data-view-target="records" type="button">查看历史</button>
               </div>
             </div>
@@ -160,7 +164,10 @@
               <p class="eyebrow">Timeline</p>
               <h2>历史记录</h2>
             </div>
-            <button class="primary-button" id="recordUpload" type="button">新增记录</button>
+            <button class="primary-button camera-cta" id="recordUpload" type="button">
+              <span aria-hidden="true">◉</span>
+              拍照
+            </button>
           </div>
           <div id="recordList" class="record-list"></div>
         </section>
@@ -283,7 +290,7 @@
         <div class="modal-header">
           <div>
             <p class="eyebrow">Daily Check</p>
-            <h2>上传今日照片</h2>
+            <h2>拍摄今日照片</h2>
           </div>
           <button class="icon-button" type="button" data-close-modal="recordModal" aria-label="关闭">×</button>
         </div>
@@ -294,7 +301,12 @@
           </div>
           <div class="form-row full">
             <label for="recordImage">照片</label>
-            <input id="recordImage" required type="file" accept="image/*" />
+            <input id="recordImage" required type="file" accept="image/*" capture="environment" />
+            <button class="camera-field" id="cameraFieldButton" type="button">
+              <span aria-hidden="true">◉</span>
+              <strong>打开相机拍照</strong>
+              <small>手机浏览器会调起摄像头，电脑端可选择图片</small>
+            </button>
           </div>
           <div class="upload-preview" id="uploadPreview"></div>
           <div class="form-row full">
