@@ -38,6 +38,10 @@ body {
     var(--bg);
 }
 
+body.is-authenticated {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 button,
 input,
 select,
@@ -287,6 +291,24 @@ body:not(.is-authenticated) .app-shell {
 
 .primary-button:hover {
   background: var(--green-dark);
+}
+
+.camera-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.camera-cta span,
+.camera-field span {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  font-size: 13px;
 }
 
 .secondary-button {
@@ -739,6 +761,47 @@ select {
   padding: 0 12px;
 }
 
+#recordImage {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.camera-field {
+  display: grid;
+  gap: 8px;
+  place-items: center;
+  min-height: 158px;
+  padding: 22px;
+  border: 1px dashed rgba(47, 119, 110, 0.42);
+  border-radius: var(--radius);
+  background: #edf5ed;
+  color: var(--green-dark);
+  text-align: center;
+}
+
+.camera-field span {
+  width: 52px;
+  height: 52px;
+  background: var(--green);
+  color: #fffdf8;
+  font-size: 19px;
+}
+
+.camera-field strong {
+  font-size: 17px;
+}
+
+.camera-field small {
+  max-width: 260px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
 textarea {
   padding: 11px 12px;
   resize: vertical;
@@ -920,16 +983,91 @@ textarea {
 }
 
 @media (max-width: 720px) {
+  html {
+    background: #f0eadf;
+  }
+
+  body {
+    background: #f0eadf;
+  }
+
+  body.is-authenticated {
+    padding-bottom: calc(86px + env(safe-area-inset-bottom));
+  }
+
   .auth-screen {
+    min-height: 100svh;
     padding: 18px;
+  }
+
+  .auth-visual {
+    min-height: 210px;
+  }
+
+  .auth-card {
+    padding: 22px;
   }
 
   .auth-card h1 {
     font-size: 28px;
   }
 
+  .app-shell {
+    display: block;
+    min-height: 100svh;
+  }
+
+  .sidebar {
+    position: fixed;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    left: 12px;
+    z-index: 20;
+    display: block;
+    height: auto;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 22px;
+    background: rgba(32, 63, 59, 0.96);
+    box-shadow: 0 16px 34px rgba(32, 63, 59, 0.26);
+    backdrop-filter: blur(16px);
+  }
+
+  .sidebar > .brand,
+  .sidebar-note {
+    display: none;
+  }
+
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .nav-item {
+    display: grid;
+    gap: 4px;
+    justify-items: center;
+    min-height: 58px;
+    padding: 7px 4px;
+    border-radius: 16px;
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .nav-item span {
+    width: 26px;
+    height: 22px;
+    background: transparent;
+    font-size: 17px;
+  }
+
+  .nav-item.active {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
   .main {
-    padding: 18px;
+    padding: 16px 14px 0;
   }
 
   .topbar,
@@ -937,6 +1075,39 @@ textarea {
   .record-top {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin: 0 -14px 14px;
+    padding: 14px 14px 10px;
+    background: rgba(240, 234, 223, 0.92);
+    backdrop-filter: blur(14px);
+  }
+
+  .topbar h1 {
+    font-size: 25px;
+  }
+
+  .topbar-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .topbar-actions #logoutButton {
+    order: 3;
+    grid-column: 1 / -1;
+    min-height: 36px;
+  }
+
+  .primary-button,
+  .secondary-button,
+  .ghost-button,
+  .danger-button {
+    min-height: 46px;
   }
 
   .topbar-actions,
@@ -949,16 +1120,60 @@ textarea {
     flex: 1;
   }
 
+  .hero-panel {
+    display: block;
+    min-height: 0;
+    margin-bottom: 14px;
+    border: 0;
+    border-radius: 20px;
+  }
+
   .hero-copy {
-    padding: 26px;
+    padding: 24px 20px;
   }
 
   .hero-copy h2 {
-    font-size: 31px;
+    font-size: 30px;
+    line-height: 1.12;
   }
 
-  .nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .hero-copy p:not(.eyebrow) {
+    margin: 12px 0 20px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr 0.72fr;
+    gap: 10px;
+  }
+
+  .camera-cta {
+    min-height: 54px;
+    font-size: 16px;
+  }
+
+  .pet-visual {
+    display: none;
+  }
+
+  .content-grid,
+  .settings-layout {
+    gap: 14px;
+  }
+
+  .panel,
+  .metric-card,
+  .empty-state,
+  .record-card,
+  .pet-card {
+    border-color: rgba(226, 220, 204, 0.8);
+    border-radius: 18px;
+  }
+
+  .panel {
+    padding: 16px;
   }
 
   .pet-card,
@@ -971,7 +1186,27 @@ textarea {
   }
 
   .pet-card {
+    grid-template-columns: 62px minmax(0, 1fr);
     align-items: start;
+    padding: 12px;
+  }
+
+  .pet-avatar {
+    width: 62px;
+    height: 62px;
+    border-radius: 16px;
+  }
+
+  .pet-actions {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .pet-actions button,
+  .record-actions button {
+    min-height: 40px;
   }
 
   .pet-actions,
@@ -979,13 +1214,58 @@ textarea {
     justify-content: flex-start;
   }
 
+  .today-card {
+    border-radius: 18px;
+  }
+
+  .today-card img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .section-heading {
+    gap: 12px;
+  }
+
   .record-card img {
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 3;
   }
 
   .bars {
     grid-template-columns: repeat(4, minmax(36px, 1fr));
+  }
+
+  .modal {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0;
+  }
+
+  .modal-card {
+    max-height: 92svh;
+    overflow: auto;
+    padding: 20px 16px calc(20px + env(safe-area-inset-bottom));
+    border-radius: 22px 22px 0 0;
+  }
+
+  .modal[open] {
+    display: grid;
+    align-items: end;
+    min-height: 100%;
+  }
+
+  .form-row.full:has(#recordImage) {
+    gap: 10px;
+  }
+
+  .camera-field {
+    min-height: 178px;
+    border-radius: 18px;
+  }
+
+  .upload-preview img {
+    max-height: none;
+    aspect-ratio: 4 / 3;
   }
 }
