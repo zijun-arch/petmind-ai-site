@@ -44,6 +44,7 @@ const els = {
   analysisDetail: document.querySelector("#analysisDetail"),
   recordPet: document.querySelector("#recordPet"),
   recordImage: document.querySelector("#recordImage"),
+  cameraFieldButton: document.querySelector("#cameraFieldButton"),
   uploadPreview: document.querySelector("#uploadPreview"),
   profileName: document.querySelector("#profileName"),
   profileEmail: document.querySelector("#profileEmail")
@@ -491,6 +492,8 @@ function openRecordModal(petId) {
   }
   renderPetOptions();
   if (petId) els.recordPet.value = petId;
+  els.recordImage.value = "";
+  els.uploadPreview.innerHTML = "";
   openModal(els.recordModal);
 }
 
@@ -606,6 +609,7 @@ document.querySelector("#openPetModal").addEventListener("click", () => openModa
 document.querySelector("#addPetInline").addEventListener("click", () => openModal(els.petModal));
 document.querySelector("#quickUpload").addEventListener("click", () => openRecordModal());
 document.querySelector("#recordUpload").addEventListener("click", () => openRecordModal());
+els.cameraFieldButton.addEventListener("click", () => els.recordImage.click());
 document.querySelector("#seedDemo").addEventListener("click", seedDemo);
 document.querySelector("#logoutButton").addEventListener("click", () => {
   state.authenticated = false;
